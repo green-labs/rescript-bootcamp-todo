@@ -1,0 +1,8 @@
+{
+  "name": "rescript-bootcamp-todo",
+  "reason": { "react-jsx": 3 },
+  "sources": [{ "dir": "src", "subdirs": true }],
+  "package-specs": [{ "module": "es6", "in-source": true }],
+  "suffix": ".mjs",
+  "bs-dependencies": ["@rescript/react"]
+}
