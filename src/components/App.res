@@ -1,6 +1,20 @@
 open Belt
 open Todo
 
+module Container = %styled.div(`
+  max-width: 500px;
+`)
+
+module Title = %styled.h1(`
+  font-size: 20px;
+  color: #fff;
+`)
+
+module Ol = %styled.ol(`
+  margin: 24px 0 0 0;
+  padding: 0;
+`)
+
 @react.component
 let make = () => {
   let (todos, setTodos) = React.Uncurried.useState(_ => todoSet)
@@ -17,10 +31,10 @@ let make = () => {
     setTodos(.prev => prev->toggleStatus(todo))
   }
 
-  <div className="container">
-    <h1 className="title"> {`RESCRIPT TO DO`->React.string} </h1>
+  <Container>
+    <Title> {`RESCRIPT TO DO`->React.string} </Title>
     <TodoInput addTodo=handleAddTodo />
-    <ol className="todosContainer">
+    <Ol>
       {todos
       ->Set.toArray
       ->Array.map(todo => {
@@ -32,6 +46,6 @@ let make = () => {
         />
       })
       ->React.array}
-    </ol>
-  </div>
+    </Ol>
+  </Container>
 }

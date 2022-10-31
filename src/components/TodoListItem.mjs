@@ -27,8 +27,7 @@ var styles = CssJs.style([
       CssJs.color({
             NAME: "hex",
             VAL: "dddbe3"
-          }),
-      CssJs.unsafe("cursor", "pointer")
+          })
     ]);
 
 function make(props) {
@@ -60,7 +59,43 @@ function getOrEmpty$1(str) {
 }
 
 var styles$1 = CssJs.style([
-      CssJs.label("Tag"),
+      CssJs.label("Content"),
+      CssJs.display("flex"),
+      CssJs.unsafe("alignItems", "center"),
+      CssJs.unsafe("cursor", "pointer"),
+      CssJs.flexGrow(1)
+    ]);
+
+function make$1(props) {
+  var className = styles$1 + getOrEmpty$1(Caml_option.undefined_to_opt(props.className));
+  var stylesObject = {
+    className: className,
+    ref: Caml_option.undefined_to_opt(props.innerRef)
+  };
+  var newProps = Object.assign({}, props, stylesObject);
+  deleteProp$1(newProps, "innerRef");
+  return React.createElement("div", newProps);
+}
+
+var Content = {
+  deleteProp: deleteProp$1,
+  getOrEmpty: getOrEmpty$1,
+  styles: styles$1,
+  make: make$1
+};
+
+var deleteProp$2 = ((newProps, key) => delete newProps[key]);
+
+function getOrEmpty$2(str) {
+  if (str !== undefined) {
+    return " " + str;
+  } else {
+    return "";
+  }
+}
+
+var styles$2 = CssJs.style([
+      CssJs.label("Id"),
       CssJs.marginRight({
             NAME: "pxFloat",
             VAL: 8
@@ -86,40 +121,6 @@ var styles$1 = CssJs.style([
       CssJs.unsafe("alignItems", "center")
     ]);
 
-function make$1(props) {
-  var className = styles$1 + getOrEmpty$1(Caml_option.undefined_to_opt(props.className));
-  var stylesObject = {
-    className: className,
-    ref: Caml_option.undefined_to_opt(props.innerRef)
-  };
-  var newProps = Object.assign({}, props, stylesObject);
-  deleteProp$1(newProps, "innerRef");
-  return React.createElement("span", newProps);
-}
-
-var Tag = {
-  deleteProp: deleteProp$1,
-  getOrEmpty: getOrEmpty$1,
-  styles: styles$1,
-  make: make$1
-};
-
-var deleteProp$2 = ((newProps, key) => delete newProps[key]);
-
-function getOrEmpty$2(str) {
-  if (str !== undefined) {
-    return " " + str;
-  } else {
-    return "";
-  }
-}
-
-var styles$2 = CssJs.style([
-      CssJs.label("TodoTitle"),
-      CssJs.display("flex"),
-      CssJs.flexGrow(1)
-    ]);
-
 function make$2(props) {
   var className = styles$2 + getOrEmpty$2(Caml_option.undefined_to_opt(props.className));
   var stylesObject = {
@@ -128,10 +129,10 @@ function make$2(props) {
   };
   var newProps = Object.assign({}, props, stylesObject);
   deleteProp$2(newProps, "innerRef");
-  return React.createElement("div", newProps);
+  return React.createElement("span", newProps);
 }
 
-var TodoTitle = {
+var Id = {
   deleteProp: deleteProp$2,
   getOrEmpty: getOrEmpty$2,
   styles: styles$2,
@@ -149,11 +150,9 @@ function getOrEmpty$3(str) {
 }
 
 var styles$3 = CssJs.style([
-      CssJs.label("DoneTitle"),
+      CssJs.label("TodoTitle"),
       CssJs.display("flex"),
-      CssJs.flexGrow(1),
-      CssJs.textAlign("left"),
-      CssJs.unsafe("textDecorationLine", "line-through")
+      CssJs.flexGrow(1)
     ]);
 
 function make$3(props) {
@@ -167,7 +166,7 @@ function make$3(props) {
   return React.createElement("div", newProps);
 }
 
-var DoneTitle = {
+var TodoTitle = {
   deleteProp: deleteProp$3,
   getOrEmpty: getOrEmpty$3,
   styles: styles$3,
@@ -185,7 +184,43 @@ function getOrEmpty$4(str) {
 }
 
 var styles$4 = CssJs.style([
-      CssJs.label("Btn"),
+      CssJs.label("DoneTitle"),
+      CssJs.display("flex"),
+      CssJs.flexGrow(1),
+      CssJs.textAlign("left"),
+      CssJs.unsafe("textDecorationLine", "line-through")
+    ]);
+
+function make$4(props) {
+  var className = styles$4 + getOrEmpty$4(Caml_option.undefined_to_opt(props.className));
+  var stylesObject = {
+    className: className,
+    ref: Caml_option.undefined_to_opt(props.innerRef)
+  };
+  var newProps = Object.assign({}, props, stylesObject);
+  deleteProp$4(newProps, "innerRef");
+  return React.createElement("div", newProps);
+}
+
+var DoneTitle = {
+  deleteProp: deleteProp$4,
+  getOrEmpty: getOrEmpty$4,
+  styles: styles$4,
+  make: make$4
+};
+
+var deleteProp$5 = ((newProps, key) => delete newProps[key]);
+
+function getOrEmpty$5(str) {
+  if (str !== undefined) {
+    return " " + str;
+  } else {
+    return "";
+  }
+}
+
+var styles$5 = CssJs.style([
+      CssJs.label("Button"),
       CssJs.backgroundColor({
             NAME: "hex",
             VAL: "382a52"
@@ -208,22 +243,22 @@ var styles$4 = CssJs.style([
       CssJs.unsafe("cursor", "pointer")
     ]);
 
-function make$4(props) {
-  var className = styles$4 + getOrEmpty$4(Caml_option.undefined_to_opt(props.className));
+function make$5(props) {
+  var className = styles$5 + getOrEmpty$5(Caml_option.undefined_to_opt(props.className));
   var stylesObject = {
     className: className,
     ref: Caml_option.undefined_to_opt(props.innerRef)
   };
   var newProps = Object.assign({}, props, stylesObject);
-  deleteProp$4(newProps, "innerRef");
+  deleteProp$5(newProps, "innerRef");
   return React.createElement("button", newProps);
 }
 
-var Btn = {
-  deleteProp: deleteProp$4,
-  getOrEmpty: getOrEmpty$4,
-  styles: styles$4,
-  make: make$4
+var Button = {
+  deleteProp: deleteProp$5,
+  getOrEmpty: getOrEmpty$5,
+  styles: styles$5,
+  make: make$5
 };
 
 function TodoListItem(Props) {
@@ -238,28 +273,31 @@ function TodoListItem(Props) {
     Curry._1(toggleStatus, todo);
   };
   return React.createElement(make, {
-              children: null,
-              onClick: onClickTodo
+              children: null
             }, React.createElement(make$1, {
-                  children: String(todo.id)
-                }), todo.status ? React.createElement(make$3, {
-                    children: text
-                  }) : React.createElement(make$2, {
-                    children: text
-                  }), React.createElement(make$4, {
+                  children: null,
+                  onClick: onClickTodo
+                }, React.createElement(make$2, {
+                      children: String(todo.id)
+                    }), todo.status ? React.createElement(make$4, {
+                        children: text
+                      }) : React.createElement(make$3, {
+                        children: text
+                      })), React.createElement(make$5, {
                   children: "삭제",
                   onClick: onClickRemove
                 }));
 }
 
-var make$5 = TodoListItem;
+var make$6 = TodoListItem;
 
 export {
   Container ,
-  Tag ,
+  Content ,
+  Id ,
   TodoTitle ,
   DoneTitle ,
-  Btn ,
-  make$5 as make,
+  Button ,
+  make$6 as make,
 }
 /* styles Not a pure module */

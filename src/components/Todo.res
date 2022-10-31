@@ -4,15 +4,14 @@ type status =
   | ToDo
   | Done
 
-type todo = {
+type t = {
   id: int,
   text: string,
   status: status,
 }
 
-// Set이 너무 어려울까?
 module IdComparator = Id.MakeComparable({
-  type t = todo
+  type t = t
   let cmp = (todoA, todoB) => Pervasives.compare(todoA.id, todoB.id)
 })
 

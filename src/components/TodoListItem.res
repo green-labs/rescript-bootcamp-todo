@@ -6,10 +6,16 @@ module Container = %styled.li(`
   align-items: center;
   justify-content: space-between;
   color: #dddbe3;
-  cursor: pointer;
 `)
 
-module Tag = %styled.span(`
+module Content = %styled.div(`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  flex: 1;
+`)
+
+module Id = %styled.span(`
   margin-right: 8px;
   width: 30px;
   height: 30px;
@@ -32,7 +38,7 @@ module DoneTitle = %styled.div(`
   text-decoration-line: line-through;
 `)
 
-module Btn = %styled.button(`
+module Button = %styled.button(`
   background: #382a52;
   border-radius: 4px;
   color: #dddbe3;
@@ -46,12 +52,14 @@ let make = (~todo, ~removeTodo, ~toggleStatus) => {
   let onClickRemove = _ => todo->removeTodo
   let onClickTodo = _ => todo->toggleStatus
 
-  <Container onClick=onClickTodo>
-    <Tag> {id->Belt.Int.toString->React.string} </Tag>
-    {switch status {
-    | ToDo => <TodoTitle> {text->React.string} </TodoTitle>
-    | Done => <DoneTitle> {text->React.string} </DoneTitle>
-    }}
-    <Btn onClick=onClickRemove> {`삭제`->React.string} </Btn>
+  <Container>
+    <Content onClick=onClickTodo>
+      <Id> {id->Belt.Int.toString->React.string} </Id>
+      {switch status {
+      | ToDo => <TodoTitle> {text->React.string} </TodoTitle>
+      | Done => <DoneTitle> {text->React.string} </DoneTitle>
+      }}
+    </Content>
+    <Button onClick=onClickRemove> {`삭제`->React.string} </Button>
   </Container>
 }
