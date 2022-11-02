@@ -8,10 +8,6 @@ import * as Filter from "../util/Filter.mjs";
 import * as Belt_Option from "rescript/lib/es6/belt_Option.js";
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
 
-function getValue(e) {
-  return e.currentTarget.value;
-}
-
 var deleteProp = ((newProps, key) => delete newProps[key]);
 
 function getOrEmpty(str) {
@@ -275,7 +271,6 @@ function EditTodo(Props) {
 var make$4 = EditTodo;
 
 export {
-  getValue ,
   Content ,
   Input ,
   Flex ,

@@ -7,10 +7,6 @@ import * as Filter from "../util/Filter.mjs";
 import * as Belt_Option from "rescript/lib/es6/belt_Option.js";
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
 
-function getValue(e) {
-  return e.currentTarget.value;
-}
-
 var deleteProp = ((newProps, key) => delete newProps[key]);
 
 function getOrEmpty(str) {
@@ -218,7 +214,6 @@ function TodoInput(Props) {
 var make$3 = TodoInput;
 
 export {
-  getValue ,
   Container ,
   Input ,
   Button ,

@@ -1,7 +1,3 @@
-open Belt
-
-let getValue = e => (e->ReactEvent.Synthetic.currentTarget)["value"]
-
 module Content = %styled.div(`
   width: 100%;
   height: 100%;
@@ -46,7 +42,7 @@ let make = (~defaultValue, ~visible, ~close, ~save) => {
   let (value, setValue) = React.useState(_ => defaultValue)
 
   let onChange = e => {
-    let v = e->getValue
+    let v = (e->ReactEvent.Synthetic.currentTarget)["value"]
     setValue(_ => v)
   }
 

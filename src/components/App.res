@@ -1,5 +1,3 @@
-open Belt
-
 module Container = %styled.div(`
   padding: 24px 16px;
   max-width: 500px;

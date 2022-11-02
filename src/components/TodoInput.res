@@ -1,7 +1,3 @@
-open Belt
-
-let getValue = e => (e->ReactEvent.Form.currentTarget)["value"]
-
 module Container = %styled.div(`
   box-sizing: border-box;
   display: flex;
@@ -37,7 +33,7 @@ let make = (~addTodo) => {
   let (value, setValue) = React.useState(_ => "")
 
   let onChange = e => {
-    let v = e->getValue
+    let v = (e->ReactEvent.Synthetic.currentTarget)["value"]
     setValue(_ => v)
   }
 

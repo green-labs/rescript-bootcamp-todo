@@ -1,5 +1,3 @@
-open Belt
-
 type status =
   | ToDo
   | Done
