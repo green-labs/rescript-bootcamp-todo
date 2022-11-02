@@ -3,6 +3,7 @@
 import * as CssJs from "bs-css-emotion/src/CssJs.mjs";
 import * as Curry from "rescript/lib/es6/curry.js";
 import * as React from "react";
+import Rodal from "rodal";
 import * as Filter from "../util/Filter.mjs";
 import * as Belt_Option from "rescript/lib/es6/belt_Option.js";
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
@@ -22,18 +23,27 @@ function getOrEmpty(str) {
 }
 
 var styles = CssJs.style([
-      CssJs.label("Container"),
-      CssJs.boxSizing("borderBox"),
-      CssJs.display("flex"),
-      CssJs.unsafe("alignItems", "center"),
+      CssJs.label("Content"),
       CssJs.width({
             NAME: "percent",
             VAL: 100
           }),
       CssJs.height({
+            NAME: "percent",
+            VAL: 100
+          }),
+      CssJs.padding2({
             NAME: "pxFloat",
-            VAL: 50
-          })
+            VAL: 24
+          }, {
+            NAME: "pxFloat",
+            VAL: 16
+          }),
+      CssJs.display("flex"),
+      CssJs.flexDirection("column"),
+      CssJs.unsafe("alignItems", "center"),
+      CssJs.unsafe("justifyContent", "center"),
+      CssJs.boxSizing("borderBox")
     ]);
 
 function make(props) {
@@ -47,7 +57,7 @@ function make(props) {
   return React.createElement("div", newProps);
 }
 
-var Container = {
+var Content = {
   deleteProp: deleteProp,
   getOrEmpty: getOrEmpty,
   styles: styles,
@@ -76,8 +86,8 @@ var styles$1 = CssJs.style([
             VAL: 100
           }),
       CssJs.height({
-            NAME: "percent",
-            VAL: 100
+            NAME: "pxFloat",
+            VAL: 30
           }),
       CssJs.border({
             NAME: "pxFloat",
@@ -92,7 +102,7 @@ var styles$1 = CssJs.style([
           }),
       CssJs.fontSize({
             NAME: "pxFloat",
-            VAL: 20
+            VAL: 13
           })
     ]);
 
@@ -125,26 +135,58 @@ function getOrEmpty$2(str) {
 }
 
 var styles$2 = CssJs.style([
-      CssJs.label("Button"),
-      CssJs.marginLeft({
+      CssJs.label("Flex"),
+      CssJs.marginTop({
             NAME: "pxFloat",
-            VAL: 12
+            VAL: 16
           }),
       CssJs.width({
-            NAME: "pxFloat",
-            VAL: 100
-          }),
-      CssJs.height({
             NAME: "percent",
             VAL: 100
           }),
+      CssJs.display("flex"),
+      CssJs.unsafe("alignItems", "center"),
+      CssJs.unsafe("justifyContent", "center"),
+      CssJs.unsafe("gap", "8px")
+    ]);
+
+function make$2(props) {
+  var className = styles$2 + getOrEmpty$2(Caml_option.undefined_to_opt(props.className));
+  var stylesObject = {
+    className: className,
+    ref: Caml_option.undefined_to_opt(props.innerRef)
+  };
+  var newProps = Object.assign({}, props, stylesObject);
+  deleteProp$2(newProps, "innerRef");
+  return React.createElement("div", newProps);
+}
+
+var Flex = {
+  deleteProp: deleteProp$2,
+  getOrEmpty: getOrEmpty$2,
+  styles: styles$2,
+  make: make$2
+};
+
+var deleteProp$3 = ((newProps, key) => delete newProps[key]);
+
+function getOrEmpty$3(str) {
+  if (str !== undefined) {
+    return " " + str;
+  } else {
+    return "";
+  }
+}
+
+var styles$3 = CssJs.style([
+      CssJs.label("Button"),
       CssJs.backgroundColor({
             NAME: "hex",
             VAL: "382a52"
           }),
       CssJs.borderRadius({
             NAME: "pxFloat",
-            VAL: 8
+            VAL: 4
           }),
       CssJs.color({
             NAME: "hex",
@@ -158,34 +200,40 @@ var styles$2 = CssJs.style([
             VAL: "636077"
           }),
       CssJs.unsafe("cursor", "pointer"),
-      CssJs.fontSize({
+      CssJs.padding2({
             NAME: "pxFloat",
-            VAL: 18
+            VAL: 4
+          }, {
+            NAME: "pxFloat",
+            VAL: 8
           })
     ]);
 
-function make$2(props) {
-  var className = styles$2 + getOrEmpty$2(Caml_option.undefined_to_opt(props.className));
+function make$3(props) {
+  var className = styles$3 + getOrEmpty$3(Caml_option.undefined_to_opt(props.className));
   var stylesObject = {
     className: className,
     ref: Caml_option.undefined_to_opt(props.innerRef)
   };
   var newProps = Object.assign({}, props, stylesObject);
-  deleteProp$2(newProps, "innerRef");
+  deleteProp$3(newProps, "innerRef");
   return React.createElement("button", newProps);
 }
 
 var Button = {
-  deleteProp: deleteProp$2,
-  getOrEmpty: getOrEmpty$2,
-  styles: styles$2,
-  make: make$2
+  deleteProp: deleteProp$3,
+  getOrEmpty: getOrEmpty$3,
+  styles: styles$3,
+  make: make$3
 };
 
-function TodoInput(Props) {
-  var addTodo = Props.addTodo;
+function EditTodo(Props) {
+  var defaultValue = Props.defaultValue;
+  var visible = Props.visible;
+  var close = Props.close;
+  var save = Props.save;
   var match = React.useState(function () {
-        return "";
+        return defaultValue;
       });
   var setValue = match[1];
   var value = match[0];
@@ -197,31 +245,41 @@ function TodoInput(Props) {
   };
   var submit = function (e) {
     e.preventDefault();
-    Belt_Option.map(Filter.emptyStr(value), addTodo);
-    Curry._1(setValue, (function (param) {
-            return "";
-          }));
+    Belt_Option.map(Filter.emptyStr(value), save);
+    Curry._1(close, undefined);
   };
-  return React.createElement("form", {
-              onSubmit: submit
-            }, React.createElement(make, {
-                  children: null
-                }, React.createElement(make$1, {
-                      value: value,
-                      onChange: onChange
-                    }), React.createElement(make$2, {
-                      children: "추가",
-                      type: "submit"
-                    })));
+  return React.createElement(Rodal, {
+              visible: visible,
+              onClose: close,
+              children: React.createElement(make, {
+                    children: React.createElement("form", {
+                          onSubmit: submit
+                        }, React.createElement(make$1, {
+                              value: value,
+                              onChange: onChange
+                            }), React.createElement(make$2, {
+                              children: null
+                            }, React.createElement(make$3, {
+                                  children: "취소",
+                                  onClick: (function (param) {
+                                      Curry._1(close, undefined);
+                                    })
+                                }), React.createElement(make$3, {
+                                  children: "저장",
+                                  type: "submit"
+                                })))
+                  })
+            });
 }
 
-var make$3 = TodoInput;
+var make$4 = EditTodo;
 
 export {
   getValue ,
-  Container ,
+  Content ,
   Input ,
+  Flex ,
   Button ,
-  make$3 as make,
+  make$4 as make,
 }
 /* styles Not a pure module */

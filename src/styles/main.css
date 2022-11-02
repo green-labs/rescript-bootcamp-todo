@@ -1,9 +1,19 @@
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap");
+@import "rodal/lib/rodal.css";
 
 * {
   font-family: "Montserrat", sans-serif;
 }
 
-body {
+#root {
   background: #1f1530;
 }

@@ -1,11 +1,12 @@
 open Belt
-open Todo
 
 module Container = %styled.div(`
+  padding: 24px 16px;
   max-width: 500px;
 `)
 
 module Title = %styled.h1(`
+  margin-bottom: 16px;
   font-size: 20px;
   color: #fff;
 `)
@@ -15,34 +16,36 @@ module Ol = %styled.ol(`
   padding: 0;
 `)
 
+module IntComparator = Id.MakeComparable({
+  type t = int
+  let cmp = (a, b) => Pervasives.compare(a, b)
+})
+
 @react.component
 let make = () => {
-  let (todos, setTodos) = React.Uncurried.useState(_ => todoSet)
+  let (todoMap, setTodoMap) = React.useState(_ => Map.make(~id=module(IntComparator)))
 
-  let handleAddTodo = todoText => {
-    setTodos(.prev => prev->addTodo(todoText))
+  let handleAddTodo = text => {
+    setTodoMap(prev => prev->TodoEntity.add(text))
   }
 
-  let handleRemoveTodo = todo => {
-    setTodos(.prev => prev->removeTodo(todo))
+  let handleRemoveTodo = id => {
+    setTodoMap(prev => prev->TodoEntity.remove(id))
   }
 
-  let handleToggleStatus = todo => {
-    setTodos(.prev => prev->toggleStatus(todo))
+  let handleUpdateTodo = (id, payload) => {
+    setTodoMap(prev => prev->TodoEntity.update(id, payload))
   }
 
   <Container>
     <Title> {`RESCRIPT TO DO`->React.string} </Title>
     <TodoInput addTodo=handleAddTodo />
     <Ol>
-      {todos
-      ->Set.toArray
-      ->Array.map(todo => {
+      {todoMap
+      ->Map.toArray
+      ->Array.map(((id, todo)) => {
         <TodoListItem
-          key={todo.id->Int.toString}
-          todo
-          removeTodo=handleRemoveTodo
-          toggleStatus=handleToggleStatus
+          key={id->Int.toString} todo removeTodo=handleRemoveTodo updateTodo=handleUpdateTodo
         />
       })
       ->React.array}
