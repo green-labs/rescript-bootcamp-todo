@@ -3,6 +3,7 @@
 import * as CssJs from "bs-css-emotion/src/CssJs.mjs";
 import * as Curry from "rescript/lib/es6/curry.js";
 import * as React from "react";
+import * as EditTodo from "./EditTodo.mjs";
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
 
 var deleteProp = ((newProps, key) => delete newProps[key]);
@@ -27,7 +28,8 @@ var styles = CssJs.style([
       CssJs.color({
             NAME: "hex",
             VAL: "dddbe3"
-          })
+          }),
+      CssJs.unsafe("gap", "8px")
     ]);
 
 function make(props) {
@@ -264,28 +266,59 @@ var Button = {
 function TodoListItem(Props) {
   var todo = Props.todo;
   var removeTodo = Props.removeTodo;
-  var toggleStatus = Props.toggleStatus;
+  var updateTodo = Props.updateTodo;
+  var status = todo.status;
   var text = todo.text;
-  var onClickRemove = function (param) {
-    Curry._1(removeTodo, todo);
-  };
-  var onClickTodo = function (param) {
-    Curry._1(toggleStatus, todo);
-  };
-  return React.createElement(make, {
-              children: null
-            }, React.createElement(make$1, {
-                  children: null,
-                  onClick: onClickTodo
-                }, React.createElement(make$2, {
-                      children: String(todo.id)
-                    }), todo.status ? React.createElement(make$4, {
-                        children: text
-                      }) : React.createElement(make$3, {
-                        children: text
-                      })), React.createElement(make$5, {
-                  children: "삭제",
-                  onClick: onClickRemove
+  var id = todo.id;
+  var match = React.useState(function () {
+        return false;
+      });
+  var setShowEditor = match[1];
+  return React.createElement(React.Fragment, undefined, React.createElement(make, {
+                  children: null
+                }, React.createElement(make$1, {
+                      children: null,
+                      onClick: (function (param) {
+                          Curry._2(updateTodo, id, {
+                                id: id,
+                                text: text,
+                                status: status ? /* ToDo */0 : /* Done */1
+                              });
+                        })
+                    }, React.createElement(make$2, {
+                          children: String(id)
+                        }), status ? React.createElement(make$4, {
+                            children: text
+                          }) : React.createElement(make$3, {
+                            children: text
+                          })), React.createElement(make$5, {
+                      children: "수정",
+                      onClick: (function (param) {
+                          Curry._1(setShowEditor, (function (param) {
+                                  return true;
+                                }));
+                        })
+                    }), React.createElement(make$5, {
+                      children: "삭제",
+                      onClick: (function (param) {
+                          Curry._1(removeTodo, id);
+                        })
+                    })), React.createElement(EditTodo.make, {
+                  defaultValue: text,
+                  visible: match[0],
+                  close: (function (param) {
+                      Curry._1(setShowEditor, (function (param) {
+                              return false;
+                            }));
+                    }),
+                  save: (function (v) {
+                      Curry._2(updateTodo, id, {
+                            id: id,
+                            text: v,
+                            status: status
+                          });
+                    }),
+                  key: text
                 }));
 }
 

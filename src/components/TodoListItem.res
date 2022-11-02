@@ -1,4 +1,4 @@
-open Todo
+open TodoEntity
 
 module Container = %styled.li(`
   margin-top: 8px;
@@ -6,6 +6,7 @@ module Container = %styled.li(`
   align-items: center;
   justify-content: space-between;
   color: #dddbe3;
+  gap: 8px;
 `)
 
 module Content = %styled.div(`
@@ -47,19 +48,48 @@ module Button = %styled.button(`
 `)
 
 @react.component
-let make = (~todo, ~removeTodo, ~toggleStatus) => {
+let make = (~todo, ~removeTodo, ~updateTodo) => {
   let {id, text, status} = todo
-  let onClickRemove = _ => todo->removeTodo
-  let onClickTodo = _ => todo->toggleStatus
 
-  <Container>
-    <Content onClick=onClickTodo>
-      <Id> {id->Belt.Int.toString->React.string} </Id>
-      {switch status {
-      | ToDo => <TodoTitle> {text->React.string} </TodoTitle>
-      | Done => <DoneTitle> {text->React.string} </DoneTitle>
-      }}
-    </Content>
-    <Button onClick=onClickRemove> {`삭제`->React.string} </Button>
-  </Container>
+  let (showEditor, setShowEditor) = React.useState(_ => false)
+
+  let toggleStatus = id => {
+    id->updateTodo({
+      id,
+      text,
+      status: switch status {
+      | ToDo => Done
+      | Done => ToDo
+      },
+    })
+  }
+
+  let saveTodo = (id, value) => {
+    id->updateTodo({
+      id,
+      text: value,
+      status,
+    })
+  }
+
+  <>
+    <Container>
+      <Content onClick={_ => id->toggleStatus}>
+        <Id> {id->Belt.Int.toString->React.string} </Id>
+        {switch status {
+        | ToDo => <TodoTitle> {text->React.string} </TodoTitle>
+        | Done => <DoneTitle> {text->React.string} </DoneTitle>
+        }}
+      </Content>
+      <Button onClick={_ => setShowEditor(_ => true)}> {`수정`->React.string} </Button>
+      <Button onClick={_ => id->removeTodo}> {`삭제`->React.string} </Button>
+    </Container>
+    <EditTodo
+      key=text
+      defaultValue=text
+      visible=showEditor
+      close={_ => setShowEditor(_ => false)}
+      save={v => saveTodo(id, v)}
+    />
+  </>
 }

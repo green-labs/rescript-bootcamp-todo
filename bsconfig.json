@@ -9,5 +9,6 @@
     "bs-css",
     "bs-css-emotion"
   ],
-  "ppx-flags": ["@davesnx/styled-ppx/ppx"]
+  "ppx-flags": ["@davesnx/styled-ppx/ppx"],
+  "bsc-flags": ["-open Belt"]
 }

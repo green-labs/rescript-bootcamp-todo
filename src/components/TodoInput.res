@@ -1,5 +1,3 @@
-let getValue = e => (e->ReactEvent.Form.currentTarget)["value"]
-
 module Container = %styled.div(`
   box-sizing: border-box;
   display: flex;
@@ -32,22 +30,25 @@ module Button = %styled.button(`
 
 @react.component
 let make = (~addTodo) => {
-  let (todo, setTodo) = React.Uncurried.useState(() => "")
+  let (value, setValue) = React.useState(_ => "")
 
-  let onChange = event => {
-    let value = event->getValue
-    setTodo(._ => value)
+  let onChange = e => {
+    let v = (e->ReactEvent.Synthetic.currentTarget)["value"]
+    setValue(_ => v)
   }
 
-  let onClickAdd = _ => {
-    if todo != "" {
-      todo->addTodo
-      setTodo(._ => "")
-    }
+  let reset = () => setValue(_ => "")
+
+  let submit = e => {
+    e->ReactEvent.Synthetic.preventDefault
+    value->Filter.emptyStr->Option.map(addTodo)->ignore
+    reset()
   }
 
-  <Container>
-    <Input value=todo onChange />
-    <Button onClick=onClickAdd> {`추가`->React.string} </Button>
-  </Container>
+  <form onSubmit=submit>
+    <Container>
+      <Input value onChange />
+      <Button type_="submit"> {`추가`->React.string} </Button>
+    </Container>
+  </form>
 }
