@@ -1,6 +1,11 @@
 type status =
-  | ToDo
+  | Todo
   | Done
+
+type filter =
+  | All
+  | TodoOnly
+  | DoneOnly
 
 type t = {
   id: int,
@@ -19,7 +24,7 @@ let add = (todoMap, text) => {
   let todo = {
     id,
     text,
-    status: ToDo,
+    status: Todo,
   }
 
   todoMap->Map.set(id, todo)
@@ -31,4 +36,15 @@ let remove = (todoMap, id) => {
 
 let update = (todoMap, id, payload) => {
   todoMap->Map.set(id, payload)
+}
+
+let keep = (todoMap, filter) => {
+  todoMap->Map.keep((_id, {status}) => {
+    switch filter {
+    | All => true
+    | TodoOnly if status == Todo => true
+    | DoneOnly if status == Done => true
+    | _ => false
+    }
+  })
 }

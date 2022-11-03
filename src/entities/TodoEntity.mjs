@@ -9,7 +9,7 @@ function add(todoMap, text) {
   var todo = {
     id: id,
     text: text,
-    status: /* ToDo */0
+    status: /* Todo */0
   };
   return Belt_Map.set(todoMap, id, todo);
 }
@@ -18,9 +18,25 @@ var remove = Belt_Map.remove;
 
 var update = Belt_Map.set;
 
+function keep(todoMap, filter) {
+  return Belt_Map.keep(todoMap, (function (_id, param) {
+                var status = param.status;
+                switch (filter) {
+                  case /* All */0 :
+                      return true;
+                  case /* TodoOnly */1 :
+                      return status === /* Todo */0;
+                  case /* DoneOnly */2 :
+                      return status === /* Done */1;
+                  
+                }
+              }));
+}
+
 export {
   add ,
   remove ,
   update ,
+  keep ,
 }
 /* No side effect */

@@ -9,6 +9,7 @@ import * as Caml_obj from "rescript/lib/es6/caml_obj.js";
 import * as TodoInput from "./TodoInput.mjs";
 import * as Belt_Array from "rescript/lib/es6/belt_Array.js";
 import * as TodoEntity from "../entities/TodoEntity.mjs";
+import * as TodoFilter from "./TodoFilter.mjs";
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
 import * as TodoListItem from "./TodoListItem.mjs";
 
@@ -147,6 +148,11 @@ function App(Props) {
         return Belt_Map.make(IntComparator);
       });
   var setTodoMap = match[1];
+  var match$1 = React.useState(function () {
+        return /* All */0;
+      });
+  var setFilter = match$1[1];
+  var filter = match$1[0];
   var handleAddTodo = function (text) {
     Curry._1(setTodoMap, (function (prev) {
             return TodoEntity.add(prev, text);
@@ -162,14 +168,22 @@ function App(Props) {
             return TodoEntity.update(prev, id, payload);
           }));
   };
+  var handleSelectFilter = function (f) {
+    Curry._1(setFilter, (function (param) {
+            return f;
+          }));
+  };
   return React.createElement(make, {
               children: null
             }, React.createElement(make$1, {
                   children: "RESCRIPT TO DO"
                 }), React.createElement(TodoInput.make, {
                   addTodo: handleAddTodo
+                }), React.createElement(TodoFilter.make, {
+                  value: filter,
+                  onChange: handleSelectFilter
                 }), React.createElement(make$2, {
-                  children: Belt_Array.map(Belt_Map.toArray(match[0]), (function (param) {
+                  children: Belt_Array.map(Belt_Map.toArray(TodoEntity.keep(match[0], filter)), (function (param) {
                           return React.createElement(TodoListItem.make, {
                                       todo: param[1],
                                       removeTodo: handleRemoveTodo,
