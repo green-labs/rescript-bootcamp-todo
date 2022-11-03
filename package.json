@@ -3,13 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@davesnx/styled-ppx": "^0.31.3",
     "@rescript/react": "^0.10.3",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
-    "bs-css": "^15.3.0",
-    "bs-css-emotion": "^4.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
@@ -18,7 +15,7 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "compile": "rescript build",
+    "res:start": "rescript build -w",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

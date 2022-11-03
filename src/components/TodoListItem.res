@@ -1,52 +1,5 @@
 open TodoEntity
 
-module Container = %styled.li(`
-  margin-top: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: #dddbe3;
-  gap: 8px;
-`)
-
-module Content = %styled.div(`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  flex: 1;
-`)
-
-module Id = %styled.span(`
-  margin-right: 8px;
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
-  background: #3e3264;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`)
-
-module TodoTitle = %styled.div(`
-  display: flex;
-  flex: 1;
-`)
-
-module DoneTitle = %styled.div(`
-  display: flex;
-  flex: 1;
-  text-align: left;
-  text-decoration-line: line-through;
-`)
-
-module Button = %styled.button(`
-  background: #382a52;
-  border-radius: 4px;
-  color: #dddbe3;
-  border: 1px solid #636077;
-  cursor: pointer;
-`)
-
 @react.component
 let make = (~todo, ~removeTodo, ~updateTodo) => {
   let {id, text, status} = todo
@@ -73,17 +26,24 @@ let make = (~todo, ~removeTodo, ~updateTodo) => {
   }
 
   <>
-    <Container>
-      <Content onClick={_ => id->toggleStatus}>
-        <Id> {id->Belt.Int.toString->React.string} </Id>
-        {switch status {
-        | Todo => <TodoTitle> {text->React.string} </TodoTitle>
-        | Done => <DoneTitle> {text->React.string} </DoneTitle>
-        }}
-      </Content>
-      <Button onClick={_ => setShowEditor(_ => true)}> {`수정`->React.string} </Button>
-      <Button onClick={_ => id->removeTodo}> {`삭제`->React.string} </Button>
-    </Container>
+    <li className="todo-list-item-container">
+      <div className="todo-list-item-content" onClick={_ => id->toggleStatus}>
+        <span className="todo-list-item-id"> {id->Belt.Int.toString->React.string} </span>
+        <div
+          className={switch status {
+          | Todo => "todo-list-item-text-todo"
+          | Done => "todo-list-item-text-done"
+          }}>
+          {text->React.string}
+        </div>
+      </div>
+      <button className="todo-list-item-button" onClick={_ => setShowEditor(_ => true)}>
+        {`수정`->React.string}
+      </button>
+      <button className="todo-list-item-button" onClick={_ => id->removeTodo}>
+        {`삭제`->React.string}
+      </button>
+    </li>
     <EditTodo
       key=text
       defaultValue=text
