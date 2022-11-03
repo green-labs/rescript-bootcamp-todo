@@ -282,7 +282,7 @@ function TodoListItem(Props) {
                           Curry._2(updateTodo, id, {
                                 id: id,
                                 text: text,
-                                status: status ? /* ToDo */0 : /* Done */1
+                                status: status ? /* Todo */0 : /* Done */1
                               });
                         })
                     }, React.createElement(make$2, {

@@ -58,8 +58,8 @@ let make = (~todo, ~removeTodo, ~updateTodo) => {
       id,
       text,
       status: switch status {
-      | ToDo => Done
-      | Done => ToDo
+      | Todo => Done
+      | Done => Todo
       },
     })
   }
@@ -77,7 +77,7 @@ let make = (~todo, ~removeTodo, ~updateTodo) => {
       <Content onClick={_ => id->toggleStatus}>
         <Id> {id->Belt.Int.toString->React.string} </Id>
         {switch status {
-        | ToDo => <TodoTitle> {text->React.string} </TodoTitle>
+        | Todo => <TodoTitle> {text->React.string} </TodoTitle>
         | Done => <DoneTitle> {text->React.string} </DoneTitle>
         }}
       </Content>
