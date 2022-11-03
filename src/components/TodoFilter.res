@@ -1,34 +1,5 @@
 open TodoEntity
 
-module Container = %styled.div(`
-  margin-top: 16px;
-  width: 100%;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-`)
-
-module Item = %styled.button(`
-  width: 100%;
-  height: 100%;
-  border-radius: 8px;
-  background: #382a52;
-  color: #636077;
-  border: none;
-  cursor: pointer;
-`)
-
-module SelectedItem = %styled.button(`
-width: 100%;
-  height: 100%;
-  border-radius: 8px;
-  background: #382a52;
-  color: #dddbe3;
-  border: 1px solid #636077;
-  cursor: pointer;
-`)
-
 let stringify = s => {
   switch s {
   | All => "all"
@@ -47,16 +18,16 @@ let makeLabel = f => {
 
 @react.component
 let make = (~value, ~onChange) => {
-  <Container>
+  <div className="filter-container">
     {[All, TodoOnly, DoneOnly]
     ->Array.map(v => {
       let isSelected = value == v
       let onClick = _ => v->onChange
-
-      isSelected
-        ? <SelectedItem key={v->stringify}> {v->makeLabel->React.string} </SelectedItem>
-        : <Item key={v->stringify} onClick> {v->makeLabel->React.string} </Item>
+      <button
+        key={v->stringify} className={isSelected ? "filter-item-selected" : "filter-item"} onClick>
+        {v->makeLabel->React.string}
+      </button>
     })
     ->React.array}
-  </Container>
+  </div>
 }
