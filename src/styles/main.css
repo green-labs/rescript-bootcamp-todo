@@ -9,6 +9,7 @@ body,
 
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap");
 @import "rodal/lib/rodal.css";
+@import "./tailwind.css";
 
 * {
   font-family: "Montserrat", sans-serif;
