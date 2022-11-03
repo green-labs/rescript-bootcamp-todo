@@ -1,25 +1,18 @@
-open TodoEntity
-
-module IntComparator = Id.MakeComparable({
-  type t = int
-  let cmp = (a, b) => Pervasives.compare(a, b)
-})
-
 @react.component
 let make = () => {
-  let (todoMap, setTodoMap) = React.useState(_ => Map.make(~id=module(IntComparator)))
-  let (filter, setFilter) = React.useState(_ => All)
+  let (todos, setTodos) = React.useState(_ => [])
+  let (filter, setFilter) = React.useState(_ => TodoHandler.All)
 
   let handleAddTodo = text => {
-    setTodoMap(prev => prev->TodoEntity.add(text))
+    setTodos(prev => prev->TodoHandler.add(text))
   }
 
   let handleRemoveTodo = id => {
-    setTodoMap(prev => prev->TodoEntity.remove(id))
+    setTodos(prev => prev->TodoHandler.remove(id))
   }
 
-  let handleUpdateTodo = (id, payload) => {
-    setTodoMap(prev => prev->TodoEntity.update(id, payload))
+  let handleUpdateTodo = todo => {
+    setTodos(prev => prev->TodoHandler.update(todo))
   }
 
   let handleSelectFilter = f => setFilter(_ => f)
@@ -29,12 +22,18 @@ let make = () => {
     <TodoInput addTodo=handleAddTodo />
     <TodoFilter value=filter onChange=handleSelectFilter />
     <ol className="list-container">
-      {todoMap
-      ->TodoEntity.keep(filter)
-      ->Map.toArray
-      ->Array.map(((id, todo)) => {
+      {todos
+      ->Array.keep(t => {
+        switch filter {
+        | All => true
+        | TodoOnly if t.status == Todo => true
+        | DoneOnly if t.status == Done => true
+        | _ => false
+        }
+      })
+      ->Array.map(todo => {
         <TodoListItem
-          key={id->Int.toString} todo removeTodo=handleRemoveTodo updateTodo=handleUpdateTodo
+          key={todo.id->Int.toString} todo removeTodo=handleRemoveTodo updateTodo=handleUpdateTodo
         />
       })
       ->React.array}

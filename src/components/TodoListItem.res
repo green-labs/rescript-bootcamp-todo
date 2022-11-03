@@ -1,4 +1,4 @@
-open TodoEntity
+open TodoHandler
 
 @react.component
 let make = (~todo, ~removeTodo, ~updateTodo) => {
@@ -7,22 +7,22 @@ let make = (~todo, ~removeTodo, ~updateTodo) => {
   let (showEditor, setShowEditor) = React.useState(_ => false)
 
   let toggleStatus = id => {
-    id->updateTodo({
+    {
       id,
       text,
       status: switch status {
       | Todo => Done
       | Done => Todo
       },
-    })
+    }->updateTodo
   }
 
   let saveTodo = (id, value) => {
-    id->updateTodo({
+    {
       id,
       text: value,
       status,
-    })
+    }->updateTodo
   }
 
   <>

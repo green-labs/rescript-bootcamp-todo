@@ -20,7 +20,7 @@ function TodoListItem(Props) {
                 }, React.createElement("div", {
                       className: "todo-list-item-content",
                       onClick: (function (param) {
-                          Curry._2(updateTodo, id, {
+                          Curry._1(updateTodo, {
                                 id: id,
                                 text: text,
                                 status: status ? /* Todo */0 : /* Done */1
@@ -51,7 +51,7 @@ function TodoListItem(Props) {
                             }));
                     }),
                   save: (function (v) {
-                      Curry._2(updateTodo, id, {
+                      Curry._1(updateTodo, {
                             id: id,
                             text: v,
                             status: status
