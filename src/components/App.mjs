@@ -2,44 +2,35 @@
 
 import * as Curry from "rescript/lib/es6/curry.js";
 import * as React from "react";
-import * as Belt_Id from "rescript/lib/es6/belt_Id.js";
-import * as Belt_Map from "rescript/lib/es6/belt_Map.js";
-import * as Caml_obj from "rescript/lib/es6/caml_obj.js";
 import * as TodoInput from "./TodoInput.mjs";
 import * as Belt_Array from "rescript/lib/es6/belt_Array.js";
-import * as TodoEntity from "../entities/TodoEntity.mjs";
 import * as TodoFilter from "./TodoFilter.mjs";
+import * as TodoHandler from "../entities/TodoHandler.mjs";
 import * as TodoListItem from "./TodoListItem.mjs";
-
-var cmp = Caml_obj.compare;
-
-var IntComparator = Belt_Id.MakeComparable({
-      cmp: cmp
-    });
 
 function App(Props) {
   var match = React.useState(function () {
-        return Belt_Map.make(IntComparator);
+        return [];
       });
-  var setTodoMap = match[1];
+  var setTodos = match[1];
   var match$1 = React.useState(function () {
         return /* All */0;
       });
   var setFilter = match$1[1];
   var filter = match$1[0];
   var handleAddTodo = function (text) {
-    Curry._1(setTodoMap, (function (prev) {
-            return TodoEntity.add(prev, text);
+    Curry._1(setTodos, (function (prev) {
+            return TodoHandler.add(prev, text);
           }));
   };
   var handleRemoveTodo = function (id) {
-    Curry._1(setTodoMap, (function (prev) {
-            return TodoEntity.remove(prev, id);
+    Curry._1(setTodos, (function (prev) {
+            return TodoHandler.remove(prev, id);
           }));
   };
-  var handleUpdateTodo = function (id, payload) {
-    Curry._1(setTodoMap, (function (prev) {
-            return TodoEntity.update(prev, id, payload);
+  var handleUpdateTodo = function (todo) {
+    Curry._1(setTodos, (function (prev) {
+            return TodoHandler.update(prev, todo);
           }));
   };
   var handleSelectFilter = function (f) {
@@ -58,12 +49,22 @@ function App(Props) {
                   onChange: handleSelectFilter
                 }), React.createElement("ol", {
                   className: "list-container"
-                }, Belt_Array.map(Belt_Map.toArray(TodoEntity.keep(match[0], filter)), (function (param) {
+                }, Belt_Array.map(Belt_Array.keep(match[0], (function (t) {
+                            switch (filter) {
+                              case /* All */0 :
+                                  return true;
+                              case /* TodoOnly */1 :
+                                  return t.status === /* Todo */0;
+                              case /* DoneOnly */2 :
+                                  return t.status === /* Done */1;
+                              
+                            }
+                          })), (function (todo) {
                         return React.createElement(TodoListItem.make, {
-                                    todo: param[1],
+                                    todo: todo,
                                     removeTodo: handleRemoveTodo,
                                     updateTodo: handleUpdateTodo,
-                                    key: String(param[0])
+                                    key: String(todo.id)
                                   });
                       }))));
 }
@@ -71,7 +72,6 @@ function App(Props) {
 var make = App;
 
 export {
-  IntComparator ,
   make ,
 }
-/* IntComparator Not a pure module */
+/* react Not a pure module */
