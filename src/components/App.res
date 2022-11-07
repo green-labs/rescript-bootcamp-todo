@@ -18,7 +18,10 @@ let make = () => {
   let handleSelectFilter = f => setFilter(_ => f)
 
   <div className="app">
-    <h1 className="app-title"> {`RESCRIPT TO DO`->React.string} </h1>
+    <div className="flex justify-between items-center mb-5">
+      <h1 className="app-title"> {`RESCRIPT TO DO`->React.string} </h1>
+      <User />
+    </div>
     <TodoInput addTodo=handleAddTodo />
     <TodoFilter value=filter onChange=handleSelectFilter />
     <ol className="list-container">

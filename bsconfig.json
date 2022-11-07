@@ -4,6 +4,7 @@
   "sources": [{ "dir": "src", "subdirs": true }],
   "package-specs": [{ "module": "es6", "in-source": true }],
   "suffix": ".mjs",
-  "bs-dependencies": ["@rescript/react"],
+  "bs-dependencies": ["@rescript/react", "bs-fetch", "decco"],
+  "ppx-flags": ["decco/ppx"],
   "bsc-flags": ["-open Belt"]
 }
