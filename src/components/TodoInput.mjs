@@ -2,8 +2,6 @@
 
 import * as Curry from "rescript/lib/es6/curry.js";
 import * as React from "react";
-import * as Filter from "../util/Filter.mjs";
-import * as Belt_Option from "rescript/lib/es6/belt_Option.js";
 
 function TodoInput(Props) {
   var addTodo = Props.addTodo;
@@ -12,17 +10,17 @@ function TodoInput(Props) {
       });
   var setValue = match[1];
   var value = match[0];
-  var onChange = function (e) {
-    var v = e.currentTarget.value;
-    Curry._1(setValue, (function (param) {
-            return v;
-          }));
-  };
   var submit = function (e) {
     e.preventDefault();
-    Belt_Option.map(Filter.emptyStr(value), addTodo);
+    Curry._1(addTodo, value);
     Curry._1(setValue, (function (param) {
             return "";
+          }));
+  };
+  var onChange = function (e) {
+    var target = e.currentTarget;
+    Curry._1(setValue, (function (param) {
+            return target.value;
           }));
   };
   return React.createElement("form", {

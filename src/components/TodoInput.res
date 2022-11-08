@@ -2,17 +2,17 @@
 let make = (~addTodo) => {
   let (value, setValue) = React.useState(_ => "")
 
-  let onChange = e => {
-    let v = (e->ReactEvent.Synthetic.currentTarget)["value"]
-    setValue(_ => v)
-  }
-
   let reset = () => setValue(_ => "")
 
   let submit = e => {
     e->ReactEvent.Synthetic.preventDefault
-    value->Filter.emptyStr->Option.map(addTodo)->ignore
+    value->addTodo
     reset()
+  }
+
+  let onChange = e => {
+    let target = e->ReactEvent.Synthetic.currentTarget
+    setValue(_ => target["value"])
   }
 
   <form onSubmit=submit>

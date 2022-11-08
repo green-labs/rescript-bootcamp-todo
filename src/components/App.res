@@ -1,43 +1,21 @@
 @react.component
 let make = () => {
   let (todos, setTodos) = React.useState(_ => [])
-  let (filter, setFilter) = React.useState(_ => TodoHandler.All)
 
-  let handleAddTodo = text => {
-    setTodos(prev => prev->TodoHandler.add(text))
+  let addTodo = todo => {
+    setTodos(prev => prev->Array.concat([todo]))
   }
-
-  let handleRemoveTodo = id => {
-    setTodos(prev => prev->TodoHandler.remove(id))
-  }
-
-  let handleUpdateTodo = todo => {
-    setTodos(prev => prev->TodoHandler.update(todo))
-  }
-
-  let handleSelectFilter = f => setFilter(_ => f)
 
   <div className="app">
     <div className="flex justify-between items-center mb-5">
       <h1 className="app-title"> {`RESCRIPT TO DO`->React.string} </h1>
       <User />
     </div>
-    <TodoInput addTodo=handleAddTodo />
-    <TodoFilter value=filter onChange=handleSelectFilter />
+    <TodoInput addTodo />
     <ol className="list-container">
       {todos
-      ->Array.keep(t => {
-        switch filter {
-        | All => true
-        | TodoOnly if t.status == Todo => true
-        | DoneOnly if t.status == Done => true
-        | _ => false
-        }
-      })
-      ->Array.map(todo => {
-        <TodoListItem
-          key={todo.id->Int.toString} todo removeTodo=handleRemoveTodo updateTodo=handleUpdateTodo
-        />
+      ->Array.mapWithIndex((idx, todo) => {
+        <TodoListItem key={idx->Int.toString} todo />
       })
       ->React.array}
     </ol>
