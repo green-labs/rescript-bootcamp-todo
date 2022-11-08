@@ -1,9 +1,34 @@
 @react.component
 let make = () => {
-  let (todos, setTodos) = React.useState(_ => [])
+  let (todos, setTodos) = React.useState((_): array<Todo.todo> => [])
 
-  let addTodo = todo => {
-    setTodos(prev => prev->Array.concat([todo]))
+  let addTodo = text => {
+    setTodos(prev => {
+      prev->Array.concat([
+        {
+          text,
+          status: ToDo,
+        },
+      ])
+    })
+  }
+
+  let toggleTodo = targetIdx => {
+    setTodos(prev => {
+      prev->Array.mapWithIndex((idx, todo) => {
+        if targetIdx != idx {
+          todo
+        } else {
+          {
+            ...todo,
+            status: switch todo.status {
+            | ToDo => Done
+            | Done => ToDo
+            },
+          }
+        }
+      })
+    })
   }
 
   <div className="app">
@@ -15,7 +40,8 @@ let make = () => {
     <ol className="list-container">
       {todos
       ->Array.mapWithIndex((idx, todo) => {
-        <TodoListItem key={idx->Int.toString} todo />
+        let onClick = _ => toggleTodo(idx)
+        <TodoListItem key={idx->Int.toString} todo onClick />
       })
       ->React.array}
     </ol>

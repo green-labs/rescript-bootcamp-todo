@@ -12,9 +12,12 @@ function App(Props) {
         return [];
       });
   var setTodos = match[1];
-  var addTodo = function (todo) {
+  var addTodo = function (text) {
     Curry._1(setTodos, (function (prev) {
-            return Belt_Array.concat(prev, [todo]);
+            return Belt_Array.concat(prev, [{
+                          text: text,
+                          status: /* ToDo */0
+                        }]);
           }));
   };
   return React.createElement("div", {
@@ -28,8 +31,23 @@ function App(Props) {
                 }), React.createElement("ol", {
                   className: "list-container"
                 }, Belt_Array.mapWithIndex(match[0], (function (idx, todo) {
+                        var onClick = function (param) {
+                          Curry._1(setTodos, (function (prev) {
+                                  return Belt_Array.mapWithIndex(prev, (function (idx$1, todo) {
+                                                if (idx !== idx$1) {
+                                                  return todo;
+                                                }
+                                                var match = todo.status;
+                                                return {
+                                                        text: todo.text,
+                                                        status: match ? /* ToDo */0 : /* Done */1
+                                                      };
+                                              }));
+                                }));
+                        };
                         return React.createElement(TodoListItem.make, {
                                     todo: todo,
+                                    onClick: onClick,
                                     key: String(idx)
                                   });
                       }))));

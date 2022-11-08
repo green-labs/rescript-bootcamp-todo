@@ -4,11 +4,16 @@ import * as React from "react";
 
 function TodoListItem(Props) {
   var todo = Props.todo;
+  var onClick = Props.onClick;
+  var match = todo.status;
   return React.createElement("li", {
-              className: "todo-list-item-container"
+              className: "todo-list-item-container",
+              onClick: onClick
             }, React.createElement("div", {
                   className: "todo-list-item-content"
-                }, React.createElement("div", undefined, todo)));
+                }, React.createElement("div", {
+                      className: match ? "todo-list-item-text-done" : "todo-list-item-text-todo"
+                    }, todo.text)));
 }
 
 var make = TodoListItem;
