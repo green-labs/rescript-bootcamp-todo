@@ -1,45 +1,16 @@
+// 1. App.res에 todos-state를 만들고,
+//    TodoInput으로부터 입력받은 todo가 todos-state에 추가될 수 있도록 구현
+// 2. 입력받은 todos-state를 기반으로 리스트형태로 그려지도록 컴포넌트 구현
+//
+
 @react.component
 let make = () => {
-  let (todos, setTodos) = React.useState(_ => [])
-  let (filter, setFilter) = React.useState(_ => TodoHandler.All)
-
-  let handleAddTodo = text => {
-    setTodos(prev => prev->TodoHandler.add(text))
-  }
-
-  let handleRemoveTodo = id => {
-    setTodos(prev => prev->TodoHandler.remove(id))
-  }
-
-  let handleUpdateTodo = todo => {
-    setTodos(prev => prev->TodoHandler.update(todo))
-  }
-
-  let handleSelectFilter = f => setFilter(_ => f)
-
   <div className="app">
     <div className="flex justify-between items-center mb-5">
       <h1 className="app-title"> {`RESCRIPT TO DO`->React.string} </h1>
       <User />
     </div>
-    <TodoInput addTodo=handleAddTodo />
-    <TodoFilter value=filter onChange=handleSelectFilter />
-    <ol className="list-container">
-      {todos
-      ->Array.keep(t => {
-        switch filter {
-        | All => true
-        | TodoOnly if t.status == Todo => true
-        | DoneOnly if t.status == Done => true
-        | _ => false
-        }
-      })
-      ->Array.map(todo => {
-        <TodoListItem
-          key={todo.id->Int.toString} todo removeTodo=handleRemoveTodo updateTodo=handleUpdateTodo
-        />
-      })
-      ->React.array}
-    </ol>
+    <TodoInput />
+    <ol className="list-container"> {<> </>} </ol>
   </div>
 }
