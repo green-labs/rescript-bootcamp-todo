@@ -1,6 +1,7 @@
-// 1. App.res에 todos-state를 만들고,
-//    TodoInput으로부터 입력받은 todo가 todos-state에 추가될 수 있도록 구현
-// 2. 입력받은 todos-state를 기반으로 리스트형태로 그려지도록 컴포넌트 구현
+// %% Challenge
+// 1. App.res에 todo list state를 만들고,
+//    TodoInput으로부터 입력받은 todo가 todo list state에 추가될 수 있도록 구현
+// 2. 입력받은 todo list state를 기반으로 리스트형태로 그려지도록 컴포넌트 구현
 //
 
 @react.component
